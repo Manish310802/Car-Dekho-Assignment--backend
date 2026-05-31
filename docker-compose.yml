@@ -1,0 +1,23 @@
+# Local dev stack: `docker compose up --build` (run from inside backend/)
+# Frontend (nginx) on http://localhost:8080, backend (FastAPI) on :8000.
+# LLM keys are optional — the app degrades gracefully without them.
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      XAI_API_KEY: ${XAI_API_KEY:-}
+      DATABASE_URL: ${DATABASE_URL:-}
+      CORS_ORIGINS: http://localhost:8080
+
+  frontend:
+    build:
+      context: ../frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend

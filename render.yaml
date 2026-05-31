@@ -1,0 +1,22 @@
+# Render Blueprint for the FastAPI backend.
+# Connect via Render → New → Blueprint, point Root Directory to "backend/".
+# Then set the secret env vars (OPENAI_API_KEY / XAI_API_KEY / DATABASE_URL / CORS_ORIGINS).
+services:
+  - type: web
+    name: cardekho-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: XAI_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
