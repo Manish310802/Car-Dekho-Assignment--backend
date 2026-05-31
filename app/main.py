@@ -29,7 +29,7 @@ app = FastAPI(title="CarDekho AI Advisor", version="1.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=false,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
