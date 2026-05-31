@@ -15,6 +15,12 @@ from .config import settings
 
 DATABASE_URL = settings.database_url or "sqlite:///./cardekho.db"
 
+# Bare postgresql:// URLs (e.g. from Render/Neon dashboards) default to the
+# psycopg2 dialect in SQLAlchemy, but we ship psycopg3 (psycopg[binary]).
+# Rewrite the scheme so SQLAlchemy picks the right driver automatically.
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
 # SQLite needs this flag to be usable across FastAPI's threadpool.
 _connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 
